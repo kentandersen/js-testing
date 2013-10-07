@@ -60,44 +60,107 @@ Se et forslag til abstraksjoner og en JavaScript-arkitektur
 
 .middle.center
 
-.node
- npm install -g karma
+Installere karma
 
+    .bash
+    npm install -g karma
 
-$ karma init karma.conf.js
+---
 
-Which testing framework do you want to use ?
-Press tab to list possible options. Enter to move to the next question.
-> jasmine
+.middle.center
+Lage konfigurasjonsfil til prosjektet
 
-Do you want to use Require.js ?
-This will add Require.js plugin.
-Press tab to list possible options. Enter to move to the next question.
-> no
+    .bash
+    $ karma init karma.conf.js
 
-Do you want to capture a browser automatically ?
-Press tab to list possible options. Enter empty string to move to the next question.
-> Chrome
-> Firefox
->
+---
 
-What is the location of your source and test files ?
-You can use glob patterns, eg. "js/*.js" or "test/**/*Spec.js".
-Enter empty string to move to the next question.
-> *.js
-> test/**/*.js
->
+.middle
+<p></p>
 
-Should any of the files included by the previous patterns be excluded ?
-You can use glob patterns, eg. "**/*.swp".
-Enter empty string to move to the next question.
->
+    .bash
+    Which testing framework do you want to use ?
+    Press tab to list possible options. Enter to move to the next question.
+    > jasmine
 
-Do you want Karma to watch all the files and run the tests on change ?
-Press tab to list possible options.
-> yes
+---
 
-Config file generated at "/Users/vojta/Code/karma/karms.conf.js".
+.middle
+<p></p>
+
+    .bash
+    Do you want to use Require.js ?
+    This will add Require.js plugin.
+    Press tab to list possible options. Enter to move to the next question.
+    > no
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    Do you want to capture a browser automatically ?
+    Press tab to list possible options. Enter empty string to move to the next question.
+    > Chrome
+    > Firefox
+    >
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    What is the location of your source and test files ?
+    You can use glob patterns, eg. "js/*.js" or "test/**/*Spec.js".
+    Enter empty string to move to the next question.
+    > *.js
+    > test/**/*.js
+    >
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    Should any of the files included by the previous patterns be excluded ?
+    You can use glob patterns, eg. "**/*.swp".
+    Enter empty string to move to the next question.
+    >
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    Do you want Karma to watch all the files and run the tests on change ?
+    Press tab to list possible options.
+    > yes
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    Config file generated at "/../../karma.conf.js".
+
+---
+
+.middle
+<p></p>
+
+    .bash
+    karma start karma.conf.js
+
+Kan også sende inn konfigurasjon i commandlinjen<br/>
+<a href="http://karma-runner.github.io/0.10/config/configuration-file.html">http://karma-runner.github.io/0.10/config/configuration-file.html</a>
+
+    .bash
+    karma start karma.conf.js --single-run
 
 ---
 
