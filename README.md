@@ -5,4 +5,3 @@ Laget av [Kim Joar](https://github.com/kjbekkelund) og [Tine](https://github.com
 
 * [Applikasjonen](http://hinderberg.github.io/js-testing/app/index.html)
 * [Presentasjonen](http://hinderberg.github.io/js-testing/index.html)
-* [Løsning](https://github.com/hinderberg/js-testing/tree/backbone-solution)
