@@ -5,6 +5,7 @@ describe("The user view", function(){
 
         // ...
 
+
         expect(view.user).toBeDefined();
     });
 
