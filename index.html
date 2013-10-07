@@ -385,18 +385,32 @@ Kan også sende inn konfigurasjon i commandlinjen<br/>
 
 # Intro til Jasmine
 
-Kan kjøres i nettleseren eller med Maven
+Kan kjøres på mange måter. F.eks. standalone, eller via Karma
 
 Kan kjøre asynkrone kall med `runs` og `waits`
 
-For å ikke kjøre spesifikke tester: `xdescribe` og `xit`
+* For å ekskludere spesifikke tester: `xdescribe` og `xit`
+* For å kun kjøre spesifikke tester: `ddescribe` og `iit`
 
 Noen rariteter:
 
 * dersom man ikke har en `expect` kjører fortsatt testen grønt …
 * dersom en testfil har en syntaksfeil sier ikke Jasmine fra (den bare skipper filen). Følg med i konsollen!
 
-Det finnes mange gode testrammeverk, blant annet QUnit, Mocha og Buster.js
+---
+
+# Testrammeverk i JavaScript
+
+* Det finnes mange gode testrammeverk, blant annet QUnit, Mocha og Buster.js.
+* Dog er ingen like robuste som f.eks. JUnit, fordi JS kjører i context av browseren og det er
+lett å innføre global state hvis man ikke passer på. ***Symptom***: testene kjører fint når alle testene kjører, men feiler når en
+kjører (eller omvendt)
+
+---
+
+.middle.center
+
+# Case
 
 ---
 
@@ -1147,8 +1161,8 @@ Modeller har ansvar for data og kommunikasjon med serveren
     var user = new User(); // kaller konstruktøren
 
     user.set({
-      accountName: "Brukskonto",
-      accountNo: "1234 56 78901"
+        accountName: "Brukskonto",
+        accountNo: "1234 56 78901"
     });
 
     user.get("accountName"); // Brukskonto!
