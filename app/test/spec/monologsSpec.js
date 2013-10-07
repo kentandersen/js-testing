@@ -1,6 +1,6 @@
 xdescribe("Monologs", function() {
   beforeEach(function() {
-    this.monologs = new BEKK.Monologs();
+    this.monologs = new App.Monologs();
   });
 
   describe("add", function() {

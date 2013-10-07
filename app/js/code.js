@@ -1,6 +1,6 @@
-// Husk å legg høyt oppe, siden andre bruker `BEKK.View`!
+// Husk å legg høyt oppe, siden andre bruker `App.View`!
 // Vi legger delt view-funksjonalitet i et eget lag i arkiteturen
-BEKK.View = Backbone.View.extend({
+App.View = Backbone.View.extend({
   renderTemplate: function(data) {
     this.el.html(Mustache.to_html(this.template, data || {}));
   }
@@ -8,7 +8,7 @@ BEKK.View = Backbone.View.extend({
 
 // ----------
 
-BEKK.NewStatusView = BEKK.View.extend({
+App.NewStatusView = App.View.extend({
   template: '<form id="new-status" action="#">' +
       '<label for="status_text">Status</label>' +
       '<textarea id="status_text" name="status" placeholder="Hva tenker du nå?"></textarea>' +
@@ -18,7 +18,7 @@ BEKK.NewStatusView = BEKK.View.extend({
 
 // ----------
 
-BEKK.StatusesView = BEKK.View.extend({
+App.StatusesView = App.View.extend({
   template: '<h2>Oppdateringer</h2>' +
     '<ul>' +
       '{{#monologs}}<li>{{.}}</li>{{/monologs}}' +

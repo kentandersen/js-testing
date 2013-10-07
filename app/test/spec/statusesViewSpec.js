@@ -1,6 +1,6 @@
 xdescribe("the statuses view", function() {
   it("should show all monologs", function() {
-    var monologs = new BEKK.Monologs();
+    var monologs = new App.Monologs();
     monologs.attr("monologs", ["Status 1", "Status 2"]);
 
     // ...
