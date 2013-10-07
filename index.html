@@ -40,7 +40,7 @@ Spør underveis!
 
 # Agenda
 
-Se reelle eksempler på testing av JavaScript
+Se på Karma, Jasmine og Backbone og eksempler på testing av JavaScript
 
 * Både gode og dårlige måter å teste
 * Diskutere virkningene av denne typen testing
@@ -52,6 +52,33 @@ Se et forslag til abstraksjoner og en JavaScript-arkitektur
 
 ---
 
+.big-code
+
+# Utbytte
+
+Vi skal lære å *ikke* skrive kode som dette:
+
+    .javascript
+    jQuery(function() {
+      $("#profile form").submit(function(event) {
+        event.preventDefault();
+
+        $.ajax({
+          url: "/profile",
+          type: "POST",
+          success: function(data) {
+            var name = data.name ? data.name : "Unknown";
+            var html = "<h1>" + name + "</h1>";
+            $("#profile .info").append(html);
+          }
+        });
+      });
+    }
+
+Dette er komplekst og veldig vanskelig å teste, fordi vi det er en miks av nettverkskall, markup, DOM selectors- og manipulering.
+
+---
+
 .middle.center
 
 ![](images/test.png)
@@ -60,7 +87,13 @@ Se et forslag til abstraksjoner og en JavaScript-arkitektur
 
 .middle.center
 
-Installere karma
+Intro til Karma
+
+---
+
+.middle.center
+
+Installere Karma
 
     .bash
     npm install -g karma
@@ -164,42 +197,14 @@ Kan også sende inn konfigurasjon i commandlinjen<br/>
 
 ---
 
-.big-code
-
-# Utbytte
-
-Vi skal lære å *ikke* skrive kode som dette:
-
-    .javascript
-    jQuery(function() {
-      $("#profile form").submit(function(event) {
-        event.preventDefault();
-
-        $.ajax({
-          url: "/profile",
-          type: "POST",
-          success: function(data) {
-            var name = data.name ? data.name : "Unknown";
-            var html = "<h1>" + name + "</h1>";
-            $("#profile .info").append(html);
-          }
-        });
-      });
-    }
-
-Dette er komplekst og veldig vanskelig å teste, fordi vi det er en miks av nettverkskall, markup, DOM selectors- og manipulering.
-
----
-
 .middle.center
 
-Men først …
+# Intro til Jasmine
 
 ---
 
-.big-code
-
-# Intro til Jasmine
+.big-code.middle
+<p></p>
 
     .javascript
     // Gruppering av tester
