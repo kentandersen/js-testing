@@ -160,7 +160,7 @@ Men først …
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 ---
 
@@ -190,7 +190,7 @@ Men først …
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 ---
 
@@ -213,14 +213,14 @@ Men først …
 
       // Selve testen
       it("says hello", function(){
-        expect(BEKK.helloWorld()).toEqual("hello world");
+        expect(App.helloWorld()).toEqual("hello world");
 
 
       });
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 ---
 
@@ -243,14 +243,14 @@ Men først …
 
       // Selve testen
       it("says hello", function(){
-        expect(BEKK.helloWorld()).toEqual("hello world");
+        expect(App.helloWorld()).toEqual("hello world");
         // Finnes mange matchere, blant annet:
         // `toBe`, `toMatch`, `toBeDefined`, `toBeTruthy`, `toContain`, osv
       });
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 ---
 
@@ -273,14 +273,14 @@ Men først …
 
       // Selve testen
       it("says hello", function(){
-        expect(BEKK.helloWorld()).toEqual("hello world");
+        expect(App.helloWorld()).toEqual("hello world");
         // Finnes mange matchere, blant annet:
         // `toBe`, `toMatch`, `toBeDefined`, `toBeTruthy`, `toContain`, osv
       });
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 ---
 
@@ -294,7 +294,7 @@ Men først …
       beforeEach(function(){
         // Kjører før hver test
 
-        this.hello = BEKK.helloWorld();
+        this.hello = App.helloWorld();
       });
 
       afterEach(function(){
@@ -310,7 +310,7 @@ Men først …
     });
 
 * BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på flere BEKK-prosjekter
+* Brukes på mange prosjekter
 
 
 ---
@@ -690,7 +690,7 @@ Livekoding
 # View-rendring
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
 
 
       initialize: function(options) {
@@ -712,7 +712,7 @@ Et view eier et element, `el`.
 # View-rendring
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
       template: '<h2>{{name}}</h2>',
 
       initialize: function(options) {
@@ -737,7 +737,7 @@ templates som trengs på forhånd.
 # View-rendring
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
       template: '<h2>{{name}}</h2>',
 
       initialize: function(options) {
@@ -774,7 +774,7 @@ Rendre `UserView` og sjekk at navnet finnes i `#profile`
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $('#profile') });
+        var view = new App.UserView({ user: user, el: $('#profile') });
 
     });
 
@@ -796,7 +796,7 @@ Test:
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $('#profile') });
+        var view = new App.UserView({ user: user, el: $('#profile') });
         view.render();
 
         expect($('#profile').text()).toContain('Test Testesen');
@@ -805,7 +805,7 @@ Test:
 Kode:
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
       template: '<h2>{{name}}</h2> osvosvosv', // plassmangel
 
       initialize: function(options) {
@@ -872,7 +872,7 @@ Refaktorer testen til å bruke dummy-jQuery-objekt.
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $('#profile') });
+        var view = new App.UserView({ user: user, el: $('#profile') });
         view.render();
 
         expect($('#profile').text()).toContain('Test Testesen');
@@ -895,7 +895,7 @@ Test:
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
         view.render();
 
         expect(view).toContainInEl("Test Testesen");
@@ -904,7 +904,7 @@ Test:
 Kode (ingen endringer!):
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
       template: '<h2>{{name}}</h2> osvosvosv', // plassmangel
 
       initialize: function(options) {
@@ -972,7 +972,7 @@ Refaktorer testen til å bruke `view.$` istedenfor `toContainInEl`:
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
         view.render();
 
         expect(view).toContainInEl("Test Testesen");
@@ -990,7 +990,7 @@ Test:
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
         view.render();
 
         expect(view.$("h2").text()).toEqual("Test Testesen");
@@ -1079,11 +1079,11 @@ Modeller har ansvar for data og kommunikasjon med serveren
     var user = new User(); // kaller konstruktøren
 
     user.set({
-      name: "Tine!",
-      seniority: "Konsulent"
+      accountName: "Brukskonto",
+      accountNo: "1234 56 78901"
     });
 
-    user.get("name"); // Tine!
+    user.get("accountName"); // Brukskonto!
 
 
 
@@ -1107,13 +1107,13 @@ Modeller har ansvar for data og kommunikasjon med serveren
     var user = new User(); // kaller konstruktøren
 
     user.set({
-      name: "Tine!",
-      seniority: "Konsulent"
+        accountName: "Brukskonto",
+        accountNo: "1234 56 78901"
     });
 
-    user.get("name"); // Tine!
+    user.get("accountName"); // Brukskonto
 
-    user.toJSON(); // { name: "Tine!", seniority: "Konsulent" }
+    user.toJSON(); // { accountName: "Brukskonto", accountNo: ""1234 56 78901" }
 
     &nbsp;
 
@@ -1135,15 +1135,15 @@ Modeller har ansvar for data og kommunikasjon med serveren
     var user = new User(); // kaller konstruktøren
 
     user.set({
-      name: "Tine!",
-      seniority: "Konsulent"
+        accountName: "Brukskonto",
+        accountNo: "1234 56 78901"
     });
 
-    user.get("name"); // Tine!
+    user.get("accountName"); // Brukskonto
 
-    user.toJSON(); // { name: "Tine!", seniority: "Konsulent" }
+    user.toJSON(); // { accountName: "Brukskonto", accountNo: ""1234 56 78901" }
 
-    new User({ name: "Tine" }); // kan sette attributter ved initialisering
+    new User({ accountName: "Brukskonto" }); // kan sette attributter ved initialisering
 
 ---
 
@@ -1163,7 +1163,7 @@ Refaktorer testen til å sende inn en modell med navn satt, istedenfor et objekt
             name: "Test Testesen"
         };
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
         view.render();
 
         expect(view.$('h2')).toHaveText("Test Testesen");
@@ -1179,11 +1179,11 @@ Test:
 
     .javascript
     it("should show user info when rendered", function(){
-        var user = new BEKK.User({
+        var user = new App.User({
             name: "Test Testesen"
         });
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
         view.render();
 
         expect(view.$('h2')).toHaveText("Test Testesen");
@@ -1192,9 +1192,9 @@ Test:
 Kode:
 
     .javascript
-    BEKK.User = Backbone.Model.extend({});
+    App.User = Backbone.Model.extend({});
 
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
 
       //...
 
@@ -1213,7 +1213,7 @@ Kode:
 Få opp en visning av navn når du åpner `index.html`
 
     .javascript
-    BEKK.start = function() {
+    App.start = function() {
       // initialiser modell med navn
 
       // initialiser view (husk #profile)
@@ -1233,13 +1233,13 @@ Filer:
 # Løsningsforslag
 
     .javascript
-    BEKK.start = function() {
+    App.start = function() {
       // initialiserer modell
-      var user = new BEKK.User();
-      user.set({ name: "Kim Joar Bekkelund" });
+      var user = new App.User();
+      user.set({ name: "Jeremy Ashkenas" });
 
       // initialiserer view
-      var userView = new BEKK.UserView({ el: $("#profile"), user: user });
+      var userView = new App.UserView({ el: $("#profile"), user: user });
 
       // rendrer view
       userView.render();
@@ -1323,8 +1323,8 @@ HUSK:
         var view, user;
 
         runs(function() {
-            user = new BEKK.User({ username: "kimjoar" });
-            view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+            user = new App.User({ username: "jashkenas" });
+            view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
             user.fetch({
                 success: function() {
@@ -1336,14 +1336,14 @@ HUSK:
         waits(1000);
 
         runs(function() {
-            expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+            expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
         });
     });
 
 Kode:
 
     .javascript
-    BEKK.User = Backbone.Model.extend({
+    App.User = Backbone.Model.extend({
         url: function() {
             return 'https://api.twitter.com/1/users/show.json?screen_name='
                 + this.get('username');
@@ -1394,7 +1394,7 @@ Vi benytter `sinon.fakeServer`:
     // Setup av en response
     var statusCode = 200;
     var headers = { "Content-Type": "application/json" };
-    var data = '{ "id": 1, "name": "Kim Joar" }';
+    var data = '{ "id": 1, "name": "Jeremy" }';
 
     server.respondWith([statusCode, headers, data]);
 
@@ -1422,11 +1422,11 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
         var view, user;
 
         runs(function(){
-            user = new BEKK.User({
-                username: "kimjoar"
+            user = new App.User({
+                username: "jashkenas"
             });
 
-            view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+            view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
             user.fetch({
                 success: function() {
@@ -1438,7 +1438,7 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
         waits(1000);
 
         runs(function(){
-            expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+            expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
         });
     });
 
@@ -1452,16 +1452,16 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
     it("should show user info when rendered", function() {
         var statusCode = 200;
         var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Kim Joar Bekkelund" }';
+        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
 
         var server = sinon.fakeServer.create();
         server.respondWith([statusCode, headers, data]);
 
-        var user = new BEKK.User({
-            username: "kimjoar"
+        var user = new App.User({
+            username: "jashkenas"
         });
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
         user.fetch({
             success: function() {
@@ -1471,7 +1471,7 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
 
         server.respond();
 
-        expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
 
         server.restore();
     });
@@ -1518,12 +1518,12 @@ handlingen skjer.
 Dette gir løsere koblinger mellom model og view, og skiller ansvaret ut der det hører hjemme.
 
     .javascript
-    var user = new BEKK.User();
+    var user = new App.User();
     user.on("error",   function() { console.log("Fail");  });
     user.on("success", function() { console.log("Hei");   });
     user.on("success", function() { console.log("Test");  });
 
-    var admin = new BEKK.User();
+    var admin = new App.User();
     admin.on("success", function() { console.log("Admin"); });
 
     user.trigger("success");
@@ -1544,15 +1544,15 @@ Refaktorer testen til å bruke eventen `change` istedenfor `success`-callback.
     .javascript
     it("should show user info when rendered", function(){
         var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Kim Joar Bekkelund" }';
+        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
         var server = sinon.fakeServer.create();
         server.respondWith([200, headers, data]);
 
-        var user = new BEKK.User({
-            username: "kimjoar"
+        var user = new App.User({
+            username: "jashkenas"
         });
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
         user.fetch({
             success: function() {
@@ -1563,7 +1563,7 @@ Refaktorer testen til å bruke eventen `change` istedenfor `success`-callback.
         server.respond();
         server.restore();
 
-        expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
     });
 
 * Tredje parameter i `on` er kontekst (altså `this`)
@@ -1578,22 +1578,22 @@ Test:
     it("should show user info when rendered", function(){
         var server = // ... oppsett av sinon fakeserver
 
-        var user = new BEKK.User({ username: "kimjoar" });
+        var user = new App.User({ username: "jashkenas" });
 
-        var view = new BEKK.UserView({ user: user, el: $('<div></div>')  });
+        var view = new App.UserView({ user: user, el: $('<div></div>')  });
 
         user.fetch();
 
         server.respond();
         server.restore();
 
-        expect(view.$("h2")).toHaveText("Kim Joar Bekkelund");
+        expect(view.$("h2")).toHaveText("Jeremy Ashkenas");
     });
 
 Kode:
 
     .javascript
-    BEKK.UserView = Backbone.View.extend({
+    App.UserView = Backbone.View.extend({
         initialize: function(options) {
             this.user = options.user;
             this.user.on("change", this.render, this);
@@ -1645,7 +1645,7 @@ For eksempel custom matchers som `toHaveText` eller rett og slett egne hjelpefun
 Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
 
     .javascript
-    var response = '{"name": "Kim Joar Bekkelund"}';
+    var response = '{"name": "Jeremy Ashkenas"}';
 
     // disse er default verdier, kan sende inn {} isteden
     var options = {
@@ -1671,7 +1671,7 @@ Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
 Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
 
     .javascript
-    var response = '{"name": "Kim Joar Bekkelund"}';
+    var response = '{"name": "Jeremy Ashkenas"}';
 
     // disse er default verdier, kan sende inn {} isteden
     var options = {};
@@ -1697,7 +1697,7 @@ Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
 Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
 
     .javascript
-    var response = '{"name": "Kim Joar Bekkelund"}';
+    var response = '{"name": "Jeremy Ashkenas"}';
 
     // disse er default verdier, kan sende inn {} isteden
     var options = {};
@@ -1717,22 +1717,22 @@ Refaktorer testen til å benytte seg av `fakeResponse`
     it("should show user info when rendered", function(){
         var statusCode = 200;
         var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Kim Joar Bekkelund" }';
+        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
         var server = sinon.fakeServer.create();
         server.respondWith([statusCode, headers, data]);
 
-        var user = new BEKK.User({
-            username: "kimjoar"
+        var user = new App.User({
+            username: "jashkenas"
         });
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
         user.fetch();
 
         server.respond();
         server.restore();
 
-        expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
     });
 
 ---
@@ -1743,20 +1743,20 @@ Test:
 
     .javascript
     it("should show user info when rendered", function(){
-        var user = new BEKK.User({
-            username: "kimjoar"
+        var user = new App.User({
+            username: "jashkenas"
         });
 
-        var view = new BEKK.UserView({ user: user, el: $("<div></div>" ) });
+        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
 
         var options = {}; // benytter default-verdiene
-        var data = '{ "id": 1, "name": "Kim Joar Bekkelund" }';
+        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
 
         fakeResponse(data, options, function() {
             user.fetch();
         });
 
-        expect(view.$('h2')).toHaveText("Kim Joar Bekkelund");
+        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
     });
 
 ---
@@ -1766,18 +1766,18 @@ Test:
 Veldig enkelt å lage en lagarkitektur med enkle konvensjoner:
 
     .javascript
-    BEKK.View = Backbone.View.extend({
+    App.View = Backbone.View.extend({
       renderTemplate: function(data) {
         var html = Mustache.to_html(this.template, data);
         this.$el.html(html);
       }
     });
 
-Lag nye views basert med `BEKK.View.extend`:
+Lag nye views basert med `App.View.extend`:
 
     .javascript
-    BEKK.UserView = BEKK.View.extend({
-        template: // ... konvensjon siden den kreves av renderTemplate i BEKK.View
+    App.UserView = App.View.extend({
+        template: // ... konvensjon siden den kreves av renderTemplate i App.View
 
         render: function() {
             // delt funksjonalitet er bra!
@@ -1798,7 +1798,7 @@ DOM-eventer.
 Alle DOM-eventene viewet lytter på, kan legges i `events`-hash-en:
 
     .javascript
-    var UserView = BEKK.View.extend({
+    var UserView = App.View.extend({
         events: {
           "click h1": "editHeading"
           // "event selektor": "funksjon"
@@ -1860,7 +1860,7 @@ for flere matchers.
 Et view kan bestå av flere views.
 
     .javascript
-    BEKK.MasterView = BEKK.View.extend({
+    App.MasterView = App.View.extend({
 
       initialize: function(options) {
           this.user = options.user;
@@ -1869,10 +1869,10 @@ Et view kan bestå av flere views.
       render: function() {
           this.$el.html(Mustache.to_html(this.template, this.user.toJSON()));
 
-          var subView = new BEKK.SubView({ el: this.$("#sub") });
+          var subView = new App.SubView({ el: this.$("#sub") });
           subView.render();
 
-          var otherView = new BEKK.OtherView({ el: this.$("#other")});
+          var otherView = new App.OtherView({ el: this.$("#other")});
           otherView.render();
 
           return this;
@@ -1891,7 +1891,7 @@ Det ligger flere tester som er "avslått" med `xdescribe` og `xit`:
 3. Siste spec i `userViewSpec.js`
 4. `statusesViewSpec.js`
 
-Implementer `BEKK.start()` slik at app-en kjører.
+Implementer `App.start()` slik at app-en kjører.
 
 ---
 
