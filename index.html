@@ -754,7 +754,7 @@ Litt kompleksitet med `el`, så vi sparer den til neste oppgave.
 To aktuelle filer:
 
 * `js/app.js`
-* `test/spec/userViewSpec.js`
+* `test/userViewSpec.js`
 
 Initialiser et nytt view med en bruker, og sjekk at brukeren finnes på viewet (trenger ikke sende med `el` enda)
 
@@ -856,7 +856,9 @@ Konvensjon å returnere `this`.
 
 # Oppgave
 
-Rendre `UserView` og sjekk at navnet finnes i `#profile`
+Rendre `UserView` og sjekk at navnet finnes
+
+Vi lager et dummy-objekt som inneholder HTML-en viewet trenger, men som bare finnes i minnet. Vi sender dette inn som `el`.
 
     .javascript
     it("should show user info when rendered", function(){
@@ -864,7 +866,7 @@ Rendre `UserView` og sjekk at navnet finnes i `#profile`
             name: "Test Testesen"
         };
 
-        var view = new App.UserView({ user: user, el: $('#profile') });
+        var view = new App.UserView({ user: user, el: $('<div></div>') });
 
     });
 
@@ -872,7 +874,7 @@ Hint:
 
 * `render`
 * Mustache-rendering: `Mustache.to_html(myTemplate, myData)`
-* `#profile` i `SpecRunner.html`
+* Views har en funksjon som kan brukes til å gjøre selectorer i context av et view `view.$()`
 
 ---
 
@@ -886,10 +888,10 @@ Test:
             name: "Test Testesen"
         };
 
-        var view = new App.UserView({ user: user, el: $('#profile') });
+        var view = new App.UserView({ user: user, el: $('<div></div>') });
         view.render();
 
-        expect($('#profile').text()).toContain('Test Testesen');
+        expect(view.$("h2").text()).toEqual("Test Testesen");
     });
 
 Kode:
@@ -907,186 +909,6 @@ Kode:
         this.$el.html(html);
         return this;
       }
-    });
-
----
-
-# Resultat
-
-For å teste på denne måten trenger vi tilgang til `.javascript $("#profile")`
-
-* Sette alt opp i DOM-en, for eksempel legg relevant HTML i `test/SpecRunner.html`
-* Laste HTML-fixtures
-
-Mye oppsett, mye kopiering, tregt og generelt sett ganske kjipt.
-
-.max550[![](images/fail.png)]
-
----
-
-# Bedre løsning
-
-Vi lager et dummy-objekt som inneholder HTML-en viewet trenger, men som bare finnes i minnet:
-
-    .javascript
-    $("<ul></ul>")
-
----
-
-# Bedre løsning
-
-Vi lager et dummy-objekt som inneholder HTML-en viewet trenger, men som bare finnes i minnet:
-
-    .javascript
-    $("<ul></ul>")
-
-I tester:
-
-    .javascript
-    var view = new UserList({ el: $("<ul></ul>") })
-
-I app-en:
-
-    .javascript
-    var view = new UserList({ el: $("#userlist") });
-
----
-
-# Oppgave
-
-Refaktorer testen til å bruke dummy-jQuery-objekt.
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $('#profile') });
-        view.render();
-
-        expect($('#profile').text()).toContain('Test Testesen');
-    });
-
-Vi har lagt til en hjelpemetode for å sjekk om en tekststreng finnes i HTML-en til viewet:
-
-    .javascript
-    expect(view).toContainInEl("En string");
-
----
-
-# Gjennomgang oppgave
-
-Test:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-        view.render();
-
-        expect(view).toContainInEl("Test Testesen");
-    });
-
-Kode (ingen endringer!):
-
-    .javascript
-    App.UserView = Backbone.View.extend({
-      template: '<h2>{{name}}</h2> osvosvosv', // plassmangel
-
-      initialize: function(options) {
-        this.user = options.user;
-      },
-
-      render: function() {
-        var html = Mustache.to_html(this.template, this.user);
-        this.$el.html(html);
-        return this;
-      }
-    });
-
----
-
-![](images/isolation/test1.png?v=0)
-
----
-
-![](images/isolation/test2.png?v=0)
-
----
-
-![](images/isolation/test3.png?v=0)
-
----
-
-![](images/isolation/test4.png?v=0)
-
----
-
-# Videre: Oppslag i DOM-en
-
-Vi bruker `$(global selektor)` for ofte, og det gjør oss koblet til DOM-en.
-
-Men nå sender vi med `el` til alle views og kan dermed slå opp lokalt i
-viewets DOM med `view.$`-funksjonen.
-
-    .javascript
-    $("#profile form")
-    // eller
-    $("#profile").find("form")
-
-    // er det samme som
-    userView.$("form")
-
-Disse er ekvivalente dersom:
-
-    .javascript
-    var userView = new UserView({ el: $("#profile") });
-
-
-Løsningen med bruk av `toContainInEl` blir for enkel siden den søker etter en
-string i hele HTML-en.
-
----
-
-# Oppgave
-
-Refaktorer testen til å bruke `view.$` istedenfor `toContainInEl`:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-        view.render();
-
-        expect(view).toContainInEl("Test Testesen");
-    });
-
----
-
-# Gjennomgang
-
-Test:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-        view.render();
-
-        expect(view.$("h2").text()).toEqual("Test Testesen");
-
-        // eller, med jasmine-jquery matcher
-        expect(view.$("h2")).toHaveText("Test Testesen");
     });
 
 ---
