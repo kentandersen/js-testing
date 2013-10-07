@@ -924,7 +924,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 Modeller har ansvar for data og kommunikasjon med serveren
 
     .javascript
-    var User = Backbone.Model.extend({
+    var Account = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -952,7 +952,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 Modeller har ansvar for data og kommunikasjon med serveren
 
     .javascript
-    var User = Backbone.Model.extend({
+    var Account = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -960,7 +960,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var user = new User(); // kaller konstruktøren
+    var account = new Account(); // kaller konstruktøren
 
 
 
@@ -980,7 +980,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 Modeller har ansvar for data og kommunikasjon med serveren
 
     .javascript
-    var User = Backbone.Model.extend({
+    var Account = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -988,14 +988,14 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var user = new User(); // kaller konstruktøren
+    var account = new Account(); // kaller konstruktøren
 
-    user.set({
-        accountName: "Brukskonto",
-        accountNo: "1234 56 78901"
+    account.set({
+        name: "Brukskonto",
+        number: "1234 56 78901"
     });
 
-    user.get("accountName"); // Brukskonto!
+    account.get("name"); // Brukskonto
 
 
 
@@ -1008,7 +1008,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 Modeller har ansvar for data og kommunikasjon med serveren
 
     .javascript
-    var User = Backbone.Model.extend({
+    var Account = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -1016,16 +1016,16 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var user = new User(); // kaller konstruktøren
+    var account = new Account(); // kaller konstruktøren
 
-    user.set({
-        accountName: "Brukskonto",
-        accountNo: "1234 56 78901"
+    account.set({
+        name: "Brukskonto",
+        number: "1234 56 78901"
     });
 
-    user.get("accountName"); // Brukskonto
+    account.get("name"); // Brukskonto
 
-    user.toJSON(); // { accountName: "Brukskonto", accountNo: ""1234 56 78901" }
+    account.toJSON(); // { name: "Brukskonto", number: "1234 56 78901" }
 
     &nbsp;
 
@@ -1036,7 +1036,7 @@ Modeller har ansvar for data og kommunikasjon med serveren
 Modeller har ansvar for data og kommunikasjon med serveren
 
     .javascript
-    var User = Backbone.Model.extend({
+    var Account = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -1044,18 +1044,18 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var user = new User(); // kaller konstruktøren
+    var account = new Account(); // kaller konstruktøren
 
-    user.set({
-        accountName: "Brukskonto",
-        accountNo: "1234 56 78901"
+    account.set({
+        name: "Brukskonto",
+        number: "1234 56 78901"
     });
 
-    user.get("accountName"); // Brukskonto
+    account.get("name"); // Brukskonto
 
-    user.toJSON(); // { accountName: "Brukskonto", accountNo: ""1234 56 78901" }
+    account.toJSON(); // { name: "Brukskonto", number: "1234 56 78901" }
 
-    new User({ accountName: "Brukskonto" }); // kan sette attributter ved initialisering
+    new Account({ name: "Brukskonto" }); // kan sette attributter ved initialisering
 
 ---
 
@@ -1128,7 +1128,7 @@ Få opp en visning av navn når du åpner `index.html`
     App.start = function() {
       // initialiser modell med navn
 
-      // initialiser view (husk #profile)
+      // initialiser view
 
       // render view
     };
@@ -1176,7 +1176,7 @@ Backbone inneholder en `fetch`-metode som tar imot et success-callback:
 Bruker `model.url` i AJAX-kall:
 
     .javascript
-    var User = Simple.Model.extend({
+    var User = App.Model.extend({
       // url kan være string
       url: "/user",
 
@@ -1197,74 +1197,7 @@ Bruker `model.url` i AJAX-kall:
 
 ---
 
-# Oppgave
-
-Hent brukerinformasjon fra Twitter-apiet og sjekk at mottatt navn finnes i `el`.
-
-    .javascript
-    it("should show user info when rendered", function() {
-        var view, user;
-
-        runs(function(){
-            // sett opp modell med ditt yndingstwitterbrukernavn og rett URL
-            // sett opp view
-            // start henting av data (husk JSONP)
-            // rendre viewet på suksess
-        });
-
-        // vi venter på å motta svar fra Twitter
-        waits(1000);
-
-        runs(function(){
-            // sjekk at `el` har rett innhold
-        });
-    });
-
-HUSK:
-
-* URL: https://api.twitter.com/1/users/show.json?screen_name=NAVN
-
-(Vi blir kanskje blokket av Twitter.)
-
----
-
-# Gjennomgang oppgave
-
-    .javascript
-    it("should show user info when rendered", function() {
-        var view, user;
-
-        runs(function() {
-            user = new App.User({ username: "jashkenas" });
-            view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-            user.fetch({
-                success: function() {
-                    view.render();
-                },
-                dataType: 'jsonp'
-            });
-        });
-        waits(1000);
-
-        runs(function() {
-            expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
-        });
-    });
-
-Kode:
-
-    .javascript
-    App.User = Backbone.Model.extend({
-        url: function() {
-            return 'https://api.twitter.com/1/users/show.json?screen_name='
-                + this.get('username');
-        }
-    });
-
----
-
-# Hva lærte vi av forrige test?
+# Hvorfor vi ikke tester mot en reell server
 
 Vi blir blokkert!
 
@@ -1327,7 +1260,7 @@ Vi benytter `sinon.fakeServer`:
 
 # Oppgave
 
-Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
+Få testen til å bruke `sinon.fakeServer` istedenfor å gå mot en reell server.
 
     .javascript
     it("should show user info when rendered", function() {
@@ -1343,8 +1276,7 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
             user.fetch({
                 success: function() {
                     view.render();
-                },
-                dataType: 'jsonp' // OBS! Fjern denne, sinon kan ikke mocke JSONP
+                }
             });
         });
         waits(1000);
@@ -1353,8 +1285,6 @@ Refaktorer testen til å bruke `sinon.fakeServer` istedenfor å gå mot Twitter.
             expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
         });
     });
-
-* Åpne Twitter-URLen som ligger i modellen, kopier responsen
 
 ---
 
