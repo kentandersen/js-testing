@@ -19,6 +19,7 @@ module.exports = function(config) {
       'js/vendor/mustache-0.4.2.js',
       'js/vendor/backbone.js',
       'test/lib/*.js',
+      'test/helper/*.js',
       'test/**/*Spec.js'
     ],
 
