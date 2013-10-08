@@ -18,6 +18,7 @@ module.exports = function(config) {
       'js/vendor/jquery-1.7.2.js',
       'js/vendor/mustache-0.4.2.js',
       'js/vendor/backbone.js',
+      'js/app.js',
       'test/lib/*.js',
       'test/helper/*.js',
       'test/**/*Spec.js'

@@ -9,6 +9,7 @@
     <link href="https://github.com/downloads/kjbekkelund/remark-bekk/bekk-0.0.5.css" type="text/css" rel="stylesheet">
     <style type="text/css" media="screen">
       #slideshow .slide .content.front-page h1 { width: 100%; }
+      #slideshow .slide .content.front-page { background-image: none !important; }
       .slide p { padding: 0; margin: 1.1em 0; }
       .slide ul { padding: 0; margin: 1.1em 0; }
       .slide img { max-width: 100%; max-height: 600px; }
@@ -40,7 +41,7 @@ Spør underveis!
 
 # Agenda
 
-Se på Karma, Jasmine og Backbone og eksempler på testing av JavaScript
+Se på Karma, Jasmine, Backbone og eksempler på testing av JavaScript
 
 * Både gode og dårlige måter å teste
 * Diskutere virkningene av denne typen testing
@@ -56,7 +57,7 @@ Se et forslag til abstraksjoner og en JavaScript-arkitektur
 
 # Utbytte
 
-Vi skal lære å *ikke* skrive kode som dette:
+Vi skal lære å *ikke* skrive kode som dette (jQuery spaghetti):
 
     .javascript
     jQuery(function() {
@@ -75,7 +76,13 @@ Vi skal lære å *ikke* skrive kode som dette:
       });
     }
 
-Dette er komplekst og veldig vanskelig å teste, fordi vi det er en miks av nettverkskall, markup, DOM selectors- og manipulering.
+Dette er komplekst og vanskelig å teste, fordi vi det er en miks av nettverkskall, markup, DOM selectors- og manipulering.
+
+---
+
+.middle.center
+
+Teste JavaScript
 
 ---
 
@@ -399,10 +406,10 @@ Noen rariteter:
 
 ---
 
-# Testrammeverk i JavaScript
+# Alternativer
 
 * Det finnes mange gode testrammeverk, blant annet QUnit, Mocha og Buster.js.
-* Dog er ingen like robuste som f.eks. JUnit, fordi JS kjører i context av browseren og det er
+* Dog er ingen like robuste som f.eks. JUnit i Java, fordi JavaScript kjører i context av browseren og det er
 lett å innføre global state hvis man ikke passer på. ***Symptom***: testene kjører fint når alle testene kjører, men feiler når en
 kjører (eller omvendt)
 
@@ -410,7 +417,7 @@ kjører (eller omvendt)
 
 .middle.center
 
-# Case
+# Dagens app
 
 ---
 
@@ -1199,9 +1206,11 @@ Bruker `model.url` i AJAX-kall:
 
 # Hvorfor vi ikke tester mot en reell server
 
-Vi blir blokkert!
+Ønsker som regel ikke å kjøre en integrasjonstest mot backend
 
-Dette går treeegt!
+Vi blir som oftest blokkert (cross-domain issues)!
+
+Det går treeegt!
 
 Og det er vanskelig å vite hvor tregt. Når vi testet feilet det 1 av 3 ganger på 500ms.
 
@@ -1266,24 +1275,19 @@ Få testen til å bruke `sinon.fakeServer` istedenfor å gå mot en reell server
     it("should show user info when rendered", function() {
         var view, user;
 
-        runs(function(){
-            user = new App.User({
-                username: "jashkenas"
-            });
-
-            view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-            user.fetch({
-                success: function() {
-                    view.render();
-                }
-            });
+        user = new App.User({
+            username: "jashkenas"
         });
-        waits(1000);
 
-        runs(function(){
-            expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
+        view = new App.UserView({ user: user, el: $("<div></div>" ) });
+
+        user.fetch({
+            success: function() {
+                view.render();
+            }
         });
+
+        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
     });
 
 ---
@@ -1322,7 +1326,7 @@ Få testen til å bruke `sinon.fakeServer` istedenfor å gå mot en reell server
 
 # Callback
 
-Hvorfor skal testen vite noe om hvordan viewet skal håndtere respons?
+Hvorfor skal testen vite noe om hvordan viewet håndterer responsen?
 
     .javascript
     user.fetch({
@@ -1603,9 +1607,9 @@ Test:
 
 ---
 
-# Lagarkitektur
+# Abstraksjoner
 
-Veldig enkelt å lage en lagarkitektur med enkle konvensjoner:
+Enkelt å lage en abstraksjoner:
 
     .javascript
     App.View = Backbone.View.extend({
