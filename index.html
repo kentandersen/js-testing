@@ -1671,11 +1671,11 @@ Når flere komponenter kan være interessert i en handling som har skjedd.
 Løsere kobling mellom komponenter.
 
     .javascript
-    Backbone.events.on("new-status", function(data) {
+    Backbone.on("new-status", function(data) {
       console.log(data);
     });
 
-    Backbone.events.trigger("new-status", "The status");
+    Backbone.trigger("new-status", "The status");
 
 ---
 
@@ -1689,7 +1689,7 @@ Eksempel med bruk av Sinon.js:
 
     .javascript
     var spy = sinon.spy();
-    Backbone.events.on("test", spy);
+    Backbone.on("test", spy);
 
     // do something which should trigger "test"
 
