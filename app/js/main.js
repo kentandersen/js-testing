@@ -1,1 +1,1 @@
-$(App.start);
+$(document).ready(App.start);
