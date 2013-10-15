@@ -23,7 +23,7 @@
 
 .front-page
 
-# Bygg en testbar Javascript-applikasjon
+# Introduksjon til backbone.js
 
 ## Workshop
 
@@ -37,19 +37,6 @@ Har du en del erfaring? Hjelp de rundt deg :)
 
 Spør underveis!
 
----
-
-# Agenda
-
-Se på Karma, Jasmine, Backbone og eksempler på testing av JavaScript
-
-* Både gode og dårlige måter å teste
-* Diskutere virkningene av denne typen testing
-
-Se et forslag til abstraksjoner og en JavaScript-arkitektur
-
-* Struktur å måle både andre rammeverk og egne applikasjoner mot
-* Ideer rundt hvordan JavaScript kan struktures for testing og vedlikehold
 
 ---
 
@@ -57,383 +44,48 @@ Se et forslag til abstraksjoner og en JavaScript-arkitektur
 
 # Utbytte
 
-Vi skal lære å *ikke* skrive kode som dette (jQuery spaghetti):
+Hvordan bruke grunnleggende byggeklosser til å bygge stor struktur
 
     .javascript
-    jQuery(function() {
-      $("#profile form").submit(function(event) {
-        event.preventDefault();
-
-        $.ajax({
-          url: "/profile",
-          type: "POST",
-          success: function(data) {
-            var name = data.name ? data.name : "Unknown";
-            var html = "<h1>" + name + "</h1>";
-            $("#profile .info").append(html);
-          }
-        });
-      });
-    }
-
-Dette er komplekst og vanskelig å teste, fordi vi det er en miks av nettverkskall, markup, DOM selectors- og manipulering.
-
----
-
-.middle.center
-
-Teste JavaScript
-
----
-
-.middle.center
-
-![](images/test.png)
-
----
-
-.middle.center
-
-Intro til Karma
-
----
-
-.middle.center
-
-Installere Karma
-
-    .bash
-    npm install -g karma
-
----
-
-.middle.center
-Lage konfigurasjonsfil til prosjektet
-
-    .bash
-    $ karma init karma.conf.js
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Which testing framework do you want to use ?
-    Press tab to list possible options. Enter to move to the next question.
-    > jasmine
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Do you want to use Require.js ?
-    This will add Require.js plugin.
-    Press tab to list possible options. Enter to move to the next question.
-    > no
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Do you want to capture a browser automatically ?
-    Press tab to list possible options. Enter empty string to move to the next question.
-    > Chrome
-    > Firefox
-    >
-
----
-
-.middle
-<p></p>
-
-    .bash
-    What is the location of your source and test files ?
-    You can use glob patterns, eg. "js/*.js" or "test/**/*Spec.js".
-    Enter empty string to move to the next question.
-    > *.js
-    > test/**/*.js
-    >
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Should any of the files included by the previous patterns be excluded ?
-    You can use glob patterns, eg. "**/*.swp".
-    Enter empty string to move to the next question.
-    >
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Do you want Karma to watch all the files and run the tests on change ?
-    Press tab to list possible options.
-    > yes
-
----
-
-.middle
-<p></p>
-
-    .bash
-    Config file generated at "/../../karma.conf.js".
-
----
-
-.middle
-<p></p>
-
-    .bash
-    karma start karma.conf.js
-
-Kan også sende inn konfigurasjon i commandlinjen<br/>
-<a href="http://karma-runner.github.io/0.10/config/configuration-file.html">http://karma-runner.github.io/0.10/config/configuration-file.html</a>
-
-    .bash
-    karma start karma.conf.js --single-run
-
----
-
-.middle.center
-
-# Intro til Jasmine
-
----
-
-.big-code.middle
-<p></p>
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    var group = new groupModel();
+    var navigationView = new NavigationView({
+      el: "nav"
     });
 
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
-
----
-
-.big-code
-
-# Intro til Jasmine
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-
-
-
-
-
-
-
-
-
-
-      // Selve testen
-      it("says hello", function(){
-
-
-
-      });
+    var groupInfoView = new GroupInfoView({
+      el: "article",
+      model: group
     });
 
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
+    Backbone.history.start();
 
----
-
-.big-code
-
-# Intro til Jasmine
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-
-
-
-
-
-
-
-
-
-
-      // Selve testen
-      it("says hello", function(){
-        expect(App.helloWorld()).toEqual("hello world");
-
-
-      });
-    });
-
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
-
----
-
-.big-code
-
-# Intro til Jasmine
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-
-
-
-
-
-
-
-
-
-
-      // Selve testen
-      it("says hello", function(){
-        expect(App.helloWorld()).toEqual("hello world");
-        // Finnes mange matchere, blant annet:
-        // `toBe`, `toMatch`, `toBeDefined`, `toBeTruthy`, `toContain`, osv
-      });
-    });
-
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
-
----
-
-.big-code
-
-# Intro til Jasmine
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-      beforeEach(function(){
-        // Kjører før hver test
-
-
-      });
-
-      afterEach(function(){
-        // Kjører etter hver test
-      });
-
-      // Selve testen
-      it("says hello", function(){
-        expect(App.helloWorld()).toEqual("hello world");
-        // Finnes mange matchere, blant annet:
-        // `toBe`, `toMatch`, `toBeDefined`, `toBeTruthy`, `toContain`, osv
-      });
-    });
-
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
-
----
-
-.big-code
-
-# Intro til Jasmine
-
-    .javascript
-    // Gruppering av tester
-    describe("My tests", function(){
-      beforeEach(function(){
-        // Kjører før hver test
-
-        this.hello = App.helloWorld();
-      });
-
-      afterEach(function(){
-        // Kjører etter hver test
-      });
-
-      // Selve testen
-      it("says hello", function(){
-        expect(this.hello).toEqual("hello world");
-        // Finnes mange matchere, blant annet:
-        // `toBe`, `toMatch`, `toBeDefined`, `toBeTruthy`, `toContain`, osv
-      });
-    });
-
-* BDD-rammeverk &mdash; vi beskriver oppførsel
-* Brukes på mange prosjekter
-
-
----
-
-# Intro til Jasmine
-
-Kan kjøres på mange måter. F.eks. standalone, eller via Karma
-
-Kan kjøre asynkrone kall med `runs` og `waits`
-
-* For å ekskludere spesifikke tester: `xdescribe` og `xit`
-* For å kun kjøre spesifikke tester: `ddescribe` og `iit`
-
-Noen rariteter:
-
-* dersom man ikke har en `expect` kjører fortsatt testen grønt …
-* dersom en testfil har en syntaksfeil sier ikke Jasmine fra (den bare skipper filen). Følg med i konsollen!
-
----
-
-# Alternativer
-
-* Det finnes mange gode testrammeverk, blant annet QUnit, Mocha og Buster.js.
-* Dog er ingen like robuste som f.eks. JUnit i Java, fordi JavaScript kjører i context av browseren og det er
-lett å innføre global state hvis man ikke passer på. ***Symptom***: testene kjører fint når alle testene kjører, men feiler når en
-kjører (eller omvendt)
 
 ---
 
 .middle.center
 
-# Dagens app
-
----
-
-.pushed
-
-![](images/monolog_cropped.png?v=2)
-
-# Målet
-
-Lage en superenkel Twitter-lignende applikasjon: *Monolog*
+Intro til Backbone
 
 ---
 
 .middle.center
 
-Views
+MV*
+
+---
+
+.middle.center
+# Model View Presenter
+
+![](images/model_view_presenter.png)
+
+---
+
+.middle.center
+
+#Views
+#Models
+#Collections
 
 ---
 
@@ -449,52 +101,26 @@ Hva er et view?
 
 ---
 
-#Views
-
-    .html
-    <body>
-        <div class="wrapper">
-            <div id="header">
-                <h1><a href="/">Monolog</a></h1>
-            </div>
-
-            <div class="container">
-                <div id="status-form">
-                  …
-                </div>
-
-                <div id="monologs">
-                  …
-                </div>
-            </div>
-
-            <div id="profile">
-                <h2>{{name}}</h2>
-                <img src="{{profile_image_url}}" alt="{{name}}">
-                <ul>
-                  <li>Followers: <span class="followers">{{followers_count}}</span></li>
-                  <li>Following: <span class="following">{{friends_count}}</span></li>
-                  <li>Monologs: <span class="monologs">{{monologs}}</span></li>
-                </ul>
-            </div>
-        </div>
-    </body>
-
----
-
 # Views
 
 Hvordan lage et nytt view:
 
     .javascript
-    var UserView = function(options) {
-      this.el = options.el;
-    }
+    var UserView = Backbone.View.extend({
+
+
+
+     
+
+      // spennende metoder
 
 
 
 
 
+
+
+    });
 
 
 
@@ -507,17 +133,24 @@ Hvordan lage et nytt view:
 Hvordan lage et nytt view:
 
     .javascript
-    var UserView = function(options) {
-      this.el = options.el;
-    }
+    var UserView = Backbone.View.extend({
 
 
 
 
 
+      // spennende metoder
+
+
+
+
+
+
+
+    });
 
     // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
+    var view = new UserView({ el: "#profile" });
     &nbsp;
 
 ---
@@ -527,17 +160,24 @@ Hvordan lage et nytt view:
 Hvordan lage et nytt view:
 
     .javascript
-    var UserView = function(options) {
-      this.el = options.el;
-    }
-    UserView.prototype.showUserInfo = function() {
-      // View-logikk og rendering
+    var UserView = Backbone.View.extend({
 
-      // Her kan vi jobbe med `this.el`
-    };
+      initialize: function() {
+        // constructor
+      }, 
+
+      render: function() {
+        // legg til html i dom'en
+      }
+
+
+
+
+
+    });
 
     // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
+    var view = new UserView({ el: "#profile" });
     &nbsp;
 
 ---
@@ -547,397 +187,118 @@ Hvordan lage et nytt view:
 Hvordan lage et nytt view:
 
     .javascript
-    var UserView = function(options) {
-      this.el = options.el;
-    }
-    UserView.prototype.showUserInfo = function() {
-      // View-logikk og rendering
+    var UserView = Backbone.View.extend({
 
-      // Her kan vi jobbe med `this.el`
-    }
+      initialize: function() {
+        // constructor
+      }, 
+
+      render: function() {
+        this.$el.html("<h1> Ben Affleck <span class='username'> </span> </h1>");
+      }
+
+      
+
+
+
+    });
 
     // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
-    view.showUserInfo();
+    var view = new UserView({ el: "#profile" });
+    &nbsp;
+
+
+
+Backbone søker gjennom dom'en etter første element som matcher *"#profile"* og lagrer det på this.el i tillegg til en jQuery wrappet versjon på this.$el
 
 ---
 
 # Views
 
-Et view eier et DOM-element, som vi vil kalle `el`.
+Hvordan lage et nytt view:
 
-Vi sender alltid med DOM-elementet når vi lager et view
+    .javascript
+    var UserView = Backbone.View.extend({
+
+      initialize: function() {
+        // constructor
+      }, 
+
+      render: function() {
+        this.$el.html("<h1> Ben Affleck <span class='username'> </span> </h1>");
+      },
+
+      setUsername: function() {
+        this.$(".username").text("Batman!");
+      }
+
+    });
+
+    // Lager en instans (og sender med `el`)
+    var view = new UserView({ el: "#profile" });
+    &nbsp;
+
+
+
+Backbone har this.$("") som en convenience metode for å søke finne elementer this.$el. Akkurat det samme som å bruke this.$el.find("");
+
+---
+
+# Views
+
+Et view mapper opp til et DOM-element
 
 Det er kun views som har lov til å røre DOM-en!
 
----
-
-.middle.center
-
-# Backbone.js
-
----
-
-# Hva er Backbone.js
-
-Lite JavaScript-bibliotek på litt mer enn 1000 linjer
-
-Har blitt mye brukt de siste årene
-
-Målet er å gi stuktur ved hjelp av et sett med byggeklosser
-
-Vi skal benytte modeller, views og events fra Backbone
-
-God dokumentasjon på
-[http://backbonejs.org](http://backbonejs.org)
-
----
-
-# Views
-
-Hvordan lage et nytt view med Backbone:
-
-    .javascript
-    // Vi kan lage views ved å bruke `extend`
-    var UserView = Backbone.View.extend({
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    });
-
-
-
-    &nbsp;
-
----
-
-# Views
-
-Hvordan lage et nytt view med Backbone:
-
-    .javascript
-    // Vi kan lage views ved å bruke `extend`
-    var UserView = Backbone.View.extend({
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    });
-
-    // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
-    &nbsp;
-
----
-
-# Views
-
-Hvordan lage et nytt view med Backbone:
-
-    .javascript
-    // Vi kan lage views ved å bruke `extend`
-    var UserView = Backbone.View.extend({
-
-      // Vi kan legge til instansmetoder.
-      // I disse metodene har vi `this` tilgjengelig.
-
-      initialize: function(options) {
-        // Konstruktøren -- kjøres automatisk når et view initialiseres
-        // Tar imot et argument, en options-hash
-
-        this.setElement(options.el);
-      },
-
-
-
-
-    });
-
-    // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
-    &nbsp;
-
----
-
-# Views
-
-Hvordan lage et nytt view med Backbone:
-
-    .javascript
-    // Vi kan lage views ved å bruke `extend`
-    var UserView = Backbone.View.extend({
-
-      // Vi kan legge til instansmetoder.
-      // I disse metodene har vi `this` tilgjengelig.
-
-      initialize: function(options) {
-        // Konstruktøren -- kjøres automatisk når et view initialiseres
-        // Tar imot et argument, en options-hash
-
-        // this.setElement(options.el);
-      },
-
-
-
-
-    });
-
-    // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
-    &nbsp;
-
----
-
-# Views
-
-Hvordan lage et nytt view med Backbone:
-
-    .javascript
-    // Vi kan lage views ved å bruke `extend`
-    var UserView = Backbone.View.extend({
-
-      // Vi kan legge til instansmetoder.
-      // I disse metodene har vi `this` tilgjengelig.
-
-      initialize: function(options) {
-        // Konstruktøren -- kjøres automatisk når et view initialiseres
-        // Tar imot et argument, en options-hash
-
-        // this.setElement(options.el);
-      },
-
-      showUserInfo: function() {
-        // View-logikk og rendering
-      };
-    });
-
-    // Lager en instans (og sender med `el`)
-    var view = new UserView({ el: $("#profile") });
-    view.showUserInfo();
+Vi kan sende med DOM-elementet når vi instansierer et view, men kan også la være. Backbone oppretter et el-element automagisk.
 
 ---
 
 .middle.center
 
-# Setup
-
-All kode ligger på [https://github.com/hinderberg/js-testing](https://github.com/hinderberg/js-testing)
-
-Gjør følgende `cd app` og `karma start karma.conf.js` for å kjøre testene.
-
-Applikasjonen ligger i `app/index.html`
-
-Slidene ligger i `index.html`.
+Hva er en modell?
 
 ---
 
-# Oppgave
 
-Vi skal starte med å se på profilseksjonen.
+.middle.center
 
-Litt kompleksitet med `el`, så vi sparer den til neste oppgave.
+![](images/model.jpg)
 
-To aktuelle filer:
-
-* `js/app.js`
-* `test/userViewSpec.js`
-
-Initialiser et nytt view med en bruker, og sjekk at brukeren finnes på viewet (trenger ikke sende med `el` enda)
-
-    .javascript
-    describe("The user view", function() {
-      it("should have a user when initialized", function() {
-        var user = {};
-
-        var view = // ...
-
-        expect(view.user).toBeDefined();
-      });
-    });
+# Modell??!
 
 ---
 
 .middle.center
 
-Livekoding
+![](images/model2.png)
+
+# Modell
 
 ---
 
-# View-rendring
 
-    .javascript
-    App.UserView = Backbone.View.extend({
+# Modell
 
-
-      initialize: function(options) {
-        // this.setElement(options.el);
-        this.user = options.user;
-      }
-
-
-
-
-
-
-    });
-
-Et view eier et element, `el`.
-
----
-
-# View-rendring
-
-    .javascript
-    App.UserView = Backbone.View.extend({
-      template: '<h2>{{name}}</h2>',
-
-      initialize: function(options) {
-        // this.setElement(options.el);
-        this.user = options.user;
-      }
-
-
-
-
-
-
-    });
-
-Et view eier et element, `el`.
-
-`template` inneholder ren HTML som skal inn i viewet. Vi har laget alle
-templates som trengs på forhånd.
-
----
-
-# View-rendring
-
-    .javascript
-    App.UserView = Backbone.View.extend({
-      template: '<h2>{{name}}</h2>',
-
-      initialize: function(options) {
-        // this.setElement(options.el);
-        this.user = options.user;
-      },
-
-      render: function(){
-        var html = Mustache.to_html(this.template, this.user);
-        this.$el.html(html);
-        return this;
-      }
-    });
-
-Et view eier et element, `el`.
-
-`template` inneholder ren HTML som skal inn i viewet. Vi har laget alle
-templates som trengs på forhånd.
-
-Det er metoden `render` sitt ansvar er å interpolere data i template og
-plassere dette i `el`.
-
-Konvensjon å returnere `this`.
-
----
-
-# Oppgave
-
-Rendre `UserView` og sjekk at navnet finnes
-
-Vi lager et dummy-objekt som inneholder HTML-en viewet trenger, men som bare finnes i minnet. Vi sender dette inn som `el`.
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $('<div></div>') });
-
-    });
-
-Hint:
-
-* `render`
-* Mustache-rendering: `Mustache.to_html(myTemplate, myData)`
-* Views har en funksjon som kan brukes til å gjøre selectorer i context av et view `view.$()`
-
----
-
-# Gjennomgang oppgave
-
-Test:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $('<div></div>') });
-        view.render();
-
-        expect(view.$("h2").text()).toEqual("Test Testesen");
-    });
-
-Kode:
-
-    .javascript
-    App.UserView = Backbone.View.extend({
-      template: '<h2>{{name}}</h2> osvosvosv', // plassmangel
-
-      initialize: function(options) {
-        this.user = options.user;
-      },
-
-      render: function() {
-        var html = Mustache.to_html(this.template, this.user);
-        this.$el.html(html);
-        return this;
-      }
-    });
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
 ---
 
 # Modell
 
-Modeller har ansvar for data og kommunikasjon med serveren
-
----
-
-# Modell
-
-Modeller har ansvar for data og kommunikasjon med serveren
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
     .javascript
-    var Account = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
         }
 
     });
+
+
+
 
 
 
@@ -956,10 +317,10 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
 # Modell
 
-Modeller har ansvar for data og kommunikasjon med serveren
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
     .javascript
-    var Account = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -967,7 +328,10 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var account = new Account(); // kaller konstruktøren
+    var user = new User(); // kaller konstruktøren
+
+
+
 
 
 
@@ -984,10 +348,10 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
 # Modell
 
-Modeller har ansvar for data og kommunikasjon med serveren
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
     .javascript
-    var Account = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -995,14 +359,17 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var account = new Account(); // kaller konstruktøren
+    var user = new User(); // kaller konstruktøren
 
-    account.set({
-        name: "Brukskonto",
-        number: "1234 56 78901"
+    user.set({
+        name: "Ben Affleck",
+        profession: "Batman!"
     });
 
-    account.get("name"); // Brukskonto
+    user.get("name"); // Ben Affleck
+
+
+
 
 
 
@@ -1012,10 +379,10 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
 # Modell
 
-Modeller har ansvar for data og kommunikasjon med serveren
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
     .javascript
-    var Account = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -1023,16 +390,19 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var account = new Account(); // kaller konstruktøren
+    var user = new User(); // kaller konstruktøren
 
-    account.set({
-        name: "Brukskonto",
-        number: "1234 56 78901"
+    user.set({
+        name: "Ben Affleck",
+        profession: "Batman!"
     });
 
-    account.get("name"); // Brukskonto
+    user.get("name"); // Ben Affleck
 
-    account.toJSON(); // { name: "Brukskonto", number: "1234 56 78901" }
+    user.toJSON(); // { name: "Ben Affleck", profession: "Batman!" }
+
+
+
 
     &nbsp;
 
@@ -1040,10 +410,10 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
 # Modell
 
-Modeller har ansvar for data og kommunikasjon med serveren
+Modeller har ansvar for oppbevaring av data og kommunikasjon med serveren
 
     .javascript
-    var Account = Backbone.Model.extend({
+    var User = Backbone.Model.extend({
 
         initialize: function() {
             // konstruktør
@@ -1051,18 +421,21 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
     });
 
-    var account = new Account(); // kaller konstruktøren
+    var user = new User(); // kaller konstruktøren
 
-    account.set({
-        name: "Brukskonto",
-        number: "1234 56 78901"
+    user.set({
+        name: "Ben Affleck",
+        profession: "Batman!"
     });
 
-    account.get("name"); // Brukskonto
+    user.get("name"); // Ben Affleck
 
-    account.toJSON(); // { name: "Brukskonto", number: "1234 56 78901" }
+    user.toJSON(); // { name: "Ben Affleck", profession: "Batman!" }
 
-    new Account({ name: "Brukskonto" }); // kan sette attributter ved initialisering
+    new User({              // kan sette attributter ved initialisering
+        name: "Matt Damon",
+        profession: "Robin"
+    }); 
 
 ---
 
@@ -1072,688 +445,831 @@ Modeller har ansvar for data og kommunikasjon med serveren
 
 ---
 
-# Oppgave
-
-Refaktorer testen til å sende inn en modell med navn satt, istedenfor et objekt.
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = {
-            name: "Test Testesen"
-        };
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-        view.render();
-
-        expect(view.$('h2')).toHaveText("Test Testesen");
-    });
-
-* Slett første testen vi skrev — den vil plutselig gi oss problemer!
-
----
-
-# Gjennomgang oppgave
-
-Test:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = new App.User({
-            name: "Test Testesen"
-        });
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-        view.render();
-
-        expect(view.$('h2')).toHaveText("Test Testesen");
-    });
-
-Kode:
-
-    .javascript
-    App.User = Backbone.Model.extend({});
-
-    App.UserView = Backbone.View.extend({
-
-      //...
-
-      render: function() {
-        var data = this.user.toJSON();
-        var html = Mustache.to_html(this.template, data);
-        this.$el.html(html);
-        return this;
-      }
-    });
-
----
-
-# Oppgave
-
-Få opp en visning av navn når du åpner `index.html`
-
-    .javascript
-    App.start = function() {
-      // initialiser modell med navn
-
-      // initialiser view
-
-      // render view
-    };
-
-Her trenger dere ikke skrive en test!
-
-Filer:
-
-* `index.html`
-* `app.js`
-
----
-
-# Løsningsforslag
-
-    .javascript
-    App.start = function() {
-      // initialiserer modell
-      var user = new App.User();
-      user.set({ name: "Jeremy Ashkenas" });
-
-      // initialiserer view
-      var userView = new App.UserView({ el: $("#profile"), user: user });
-
-      // rendrer view
-      userView.render();
-    };
-
----
-
 # Modell
 
-Backbone inneholder en `fetch`-metode som tar imot et success-callback:
+Holder *et* data-sett
 
-    .javascript
-    user.fetch({
-      success: function() {
-        // håndter suksess
-        // nå er alle mottatte verdier satt på `user`
-        // hent verdi ved å bruke `get` eller `toJSON`
-      },
-      dataType: 'jsonp' // dersom man trenger noe annet enn JSON
-    });
+Kan kommunisere med server
 
-Bruker `model.url` i AJAX-kall:
+Kan opprett, endre og slette data
 
-    .javascript
-    var User = App.Model.extend({
-      // url kan være string
-      url: "/user",
-
-      // eller funksjon
-      url: function() {
-          return "/user/" + this.get('id');
-      }
-    });
-
-    var user = new User();
-    user.fetch(...) // her brukes model.url
-
----
-
-.middle.center
-
-![](images/model_fetch_callback.png?v=2)
-
----
-
-# Hvorfor vi ikke tester mot en reell server
-
-Ønsker som regel ikke å kjøre en integrasjonstest mot backend
-
-Vi blir som oftest blokkert (cross-domain issues)!
-
-Det går treeegt!
-
-Og det er vanskelig å vite hvor tregt. Når vi testet feilet det 1 av 3 ganger på 500ms.
-
-Vanskelig i store prosjekter siden vi må ha en kjørende app i byggeprosessen.
-
-… det må finnes bedre måter å gjøre dette på!
-
----
-
-# sinon.js
-
-[http://sinonjs.org](http://sinonjs.org)
-
-"Standalone test spies, stubs and mocks for JavaScript. No dependencies, works
-with any unit testing framework."
-
-Inneholder også:
-
-* Fake timers for `setTimeout()`
-* Mocking av AJAX-kall
-
-Det finnes ekstra matchers for Jasmine, se
-[https://github.com/froots/jasmine-sinon](https://github.com/froots/jasmine-sinon).
-
----
-
-# Mocking av AJAX-kall
-
-Vi benytter `sinon.fakeServer`:
-
-    .javascript
-    // Setup
-    var server = sinon.fakeServer.create();
-
-    // Setup av en response
-    var statusCode = 200;
-    var headers = { "Content-Type": "application/json" };
-    var data = '{ "id": 1, "name": "Jeremy" }';
-
-    server.respondWith([statusCode, headers, data]);
-
-    // her gjøres et AJAX-kall
-
-    // Svar på AJAX-kallet
-    // (tilstanden mellom AJAX-kallet og respond kan være verdifull)
-    server.respond();
-
-    // Teardown
-    server.restore();
-
-* Mye, mye raskere tester
-* Responsen kan enkelt tilpasses det vi ønsker å teste
-* ... men: Registerer ikke endringer i API-et
-
----
-
-# Oppgave
-
-Få testen til å bruke `sinon.fakeServer` istedenfor å gå mot en reell server.
-
-    .javascript
-    it("should show user info when rendered", function() {
-        var view, user;
-
-        user = new App.User({
-            username: "jashkenas"
-        });
-
-        view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-        user.fetch({
-            success: function() {
-                view.render();
-            }
-        });
-
-        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
-    });
-
----
-
-# Gjennomgang oppgave
-
-    .javascript
-    it("should show user info when rendered", function() {
-        var statusCode = 200;
-        var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
-
-        var server = sinon.fakeServer.create();
-        server.respondWith([statusCode, headers, data]);
-
-        var user = new App.User({
-            username: "jashkenas"
-        });
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-        user.fetch({
-            success: function() {
-                view.render();
-            }
-        });
-
-        server.respond();
-
-        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
-
-        server.restore();
-    });
-
----
-
-# Callback
-
-Hvorfor skal testen vite noe om hvordan viewet håndterer responsen?
-
-    .javascript
-    user.fetch({
-      success: function(){
-        view.render();
-      }
-    });
 
 
 ---
 
 .middle.center
 
-![](images/model_fetch_callback.png?v=2)
-
-Hva skjer når flere skal oppdateres?
+  Collections
 
 ---
-# Callback
 
-Dette burde være:
+
+# Collections
+
+Collections er en samling med modeller
 
     .javascript
-    user.fetch();
+    var Users = Backbone.Collection.extend({
 
-Og så kan viewet få beskjed ved suksess eller feil.
+        initialize: function() {
+            // konstruktør
+        }
 
----
+        
 
-# Events!
-
-Viewet sier fra hva den er interessert i å lytte på og får beskjed når
-handlingen skjer.
-
-Dette gir løsere koblinger mellom model og view, og skiller ansvaret ut der det hører hjemme.
-
-    .javascript
-    var user = new App.User();
-    user.on("error",   function() { console.log("Fail");  });
-    user.on("success", function() { console.log("Hei");   });
-    user.on("success", function() { console.log("Test");  });
-
-    var admin = new App.User();
-    admin.on("success", function() { console.log("Admin"); });
-
-    user.trigger("success");
-    // Vil skrive ut "Hei" og "Test"
-
----
-
-.middle.center
-
-![](images/model_fetch3.png?v=4)
-
----
-
-# Oppgave
-
-Refaktorer testen til å bruke eventen `change` istedenfor `success`-callback.
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
-        var server = sinon.fakeServer.create();
-        server.respondWith([200, headers, data]);
-
-        var user = new App.User({
-            username: "jashkenas"
-        });
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-        user.fetch({
-            success: function() {
-                view.render();
-            }
-        });
-
-        server.respond();
-        server.restore();
-
-        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
     });
 
-* Tredje parameter i `on` er kontekst (altså `this`)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    &nbsp;
+
 
 ---
 
-# Gjennomgang av oppgave
 
-Test:
+# Collections
 
-    .javascript
-    it("should show user info when rendered", function(){
-        var server = // ... oppsett av sinon fakeserver
-
-        var user = new App.User({ username: "jashkenas" });
-
-        var view = new App.UserView({ user: user, el: $('<div></div>')  });
-
-        user.fetch();
-
-        server.respond();
-        server.restore();
-
-        expect(view.$("h2")).toHaveText("Jeremy Ashkenas");
-    });
-
-Kode:
+Collections er en samling med modeller
 
     .javascript
-    App.UserView = Backbone.View.extend({
-        initialize: function(options) {
-            this.user = options.user;
-            this.user.on("change", this.render, this);
+    var Users = Backbone.Collection.extend({
+
+        initialize: function() {
+            // konstruktør
         },
 
-        render: // ...
+        model: User
+
     });
 
----
 
-# Testabstraksjoner
 
-Hold testene rene
 
-Like høy kvalitet på testkode som app-kode
 
-DRY
 
-Mer ekspressive tester!
 
-For eksempel custom matchers som `toHaveText` eller rett og slett egne hjelpefunksjoner
 
----
 
-# En testabstraksjon
 
-    .javascript
-    var server = sinon.fakeServer.create();
-    server.respondWith([statusCode, headers, response]);
 
-    // ...
 
-    server.respond();
-    server.restore();
+
+
+
+
+
+    &nbsp;
+
 
 ---
 
-# En testabstraksjon
+# Collections
+
+Collections er en samling med modeller
 
     .javascript
-    var server = sinon.fakeServer.create();
-    server.respondWith([statusCode, headers, response]);
+    var Users = Backbone.Collection.extend({
 
-    // ...
+        initialize: function() {
+            // konstruktør
+        },
 
-    server.respond();
-    server.restore();
+        model: User
 
-Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
+    });
+
+    var users = new Users();
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+    &nbsp;
+
+
+---
+
+# Collections
+
+Collections er en samling med modeller
 
     .javascript
-    var response = '{"name": "Jeremy Ashkenas"}';
+    var Users = Backbone.Collection.extend({
 
-    // disse er default verdier, kan sende inn {} isteden
-    var options = {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" }
+        initialize: function() {
+            // konstruktør
+        },
+
+        model: User
+
+    });
+
+    var users = new Users();
+
+    user.add({
+        name: "Clark Kent",
+        profession: "Superman!"
+    });
+
+
+
+
+
+
+
+
+
+
+    &nbsp;
+
+
+---
+
+
+# Collections
+
+Collections er en samling med modeller
+
+    .javascript
+    var Users = Backbone.Collection.extend({
+
+        initialize: function() {
+            // konstruktør
+        },
+
+        model: User
+
+    });
+
+    var users = new Users();
+
+    user.add({
+        name: "Clark Kent",
+        profession: "Superman!"
+    });
+
+    user.length; // 1
+
+    
+
+
+
+
+
+
+    &nbsp;
+
+
+---
+
+# Collections
+
+Collections er en samling med modeller
+
+    .javascript
+    var Users = Backbone.Collection.extend({
+
+        initialize: function() {
+            // konstruktør
+        },
+
+        model: User
+
+    });
+
+    var users = new Users();
+
+    user.add({
+        name: "Clark Kent",
+        profession: "Superman!"
+    });
+
+    user.length; // 1
+
+    user.toJSON(); // [{ name: "Clark Kent", profession: "Superman!" }]
+
+ 
+
+
+
+
+    &nbsp;
+
+
+---
+
+# Collections
+
+Collections er en samling med modeller
+
+    .javascript
+    var Users = Backbone.Collection.extend({
+
+        initialize: function() {
+            // konstruktør
+        },
+
+        model: User
+
+    });
+
+    var users = new Users();
+
+    user.add({
+        name: "Clark Kent",
+        profession: "Superman!"
+    });
+
+    user.length; // 1
+
+    user.toJSON(); // [{ name: "Clark Kent", profession: "Superman!" }]
+
+    new Users({        // kan sette data ved initialisering
+        name: "Tony Stark",
+        profession: "Iron Man"
+    }); 
+
+    &nbsp;
+
+
+
+---
+
+
+# Oppgave
+
+Vi skal starte å lage en enkel liste applikasjon
+
+Opprett et set med data i en liste skriv denne ut i dom'en 
+
+
+Fire aktuelle filer:
+
+* js/app.js
+* js/todo/todoView.js
+* js/todo/todoCollection.js
+* js/todo/todoModel.js
+
+
+---
+
+
+.middle.center
+
+Løsningsforslag
+
+---
+
+.middle.center
+
+# Events
+
+
+---
+
+# Events
+
+* Standard Pub / sub
+* Alle backbone objekter kan binde og trigge evener
+* Settes opp med en key (string) og en callback-funksjon
+* Event-triggere kan også sende med argumenter til callbacken
+
+
+---
+
+#Events
+
+    .javascript
+    var Events = {
+      on: function(name, callback) {
+        this.events || (this.events = {});
+            
+        var events = this.events[name] || (this.events[name] = []);
+        events.push(callback);
+      },
+
+      off: function(name, callback) {
+        var events = this.events[name];
+        if(!events) return;
+
+        for (var i = 0; i < events.length; i++) {
+          if(callback === events[i]) {
+            events = events.splice(i, 1);
+          }
+        }
+      },
+      
+      trigger: function(name, arg) {
+        if (!this.events) return;
+
+        var events = this.events[name];
+        if(!events) return;
+
+        for (var i = 0; i < events.length; i++) {
+          events[i].call(this, arg);
+        };
+      }
     };
 
-    &nbsp;
+
 
 ---
 
-# En testabstraksjon
+# Events
+
 
     .javascript
-    var server = sinon.fakeServer.create();
-    server.respondWith([statusCode, headers, response]);
-
-    // ...
-
-    server.respond();
-    server.restore();
-
-Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
-
-    .javascript
-    var response = '{"name": "Jeremy Ashkenas"}';
-
-    // disse er default verdier, kan sende inn {} isteden
-    var options = {};
-
-
-
-
-    &nbsp;
-
----
-
-# En testabstraksjon
-
-    .javascript
-    var server = sinon.fakeServer.create();
-    server.respondWith([statusCode, headers, response]);
-
-    // ...
-
-    server.respond();
-    server.restore();
-
-Løsning: `fakeResponse` (se i `helper/fakeResponse.js`)
-
-    .javascript
-    var response = '{"name": "Jeremy Ashkenas"}';
-
-    // disse er default verdier, kan sende inn {} isteden
-    var options = {};
-
-    fakeResponse(response, options, function() {
-        // alle AJAX-kall som kalles i denne indre funksjonen ...
-    });
-    // ... vil ha ha mottatt `response` her
-
----
-
-# Oppgave
-
-Refaktorer testen til å benytte seg av `fakeResponse`
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var statusCode = 200;
-        var headers = { "Content-Type": "application/json" };
-        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
-        var server = sinon.fakeServer.create();
-        server.respondWith([statusCode, headers, data]);
-
-        var user = new App.User({
-            username: "jashkenas"
-        });
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-        user.fetch();
-
-        server.respond();
-        server.restore();
-
-        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
-    });
-
----
-
-# Gjennomgang av oppgave
-
-Test:
-
-    .javascript
-    it("should show user info when rendered", function(){
-        var user = new App.User({
-            username: "jashkenas"
-        });
-
-        var view = new App.UserView({ user: user, el: $("<div></div>" ) });
-
-        var options = {}; // benytter default-verdiene
-        var data = '{ "id": 1, "name": "Jeremy Ashkenas" }';
-
-        fakeResponse(data, options, function() {
-            user.fetch();
-        });
-
-        expect(view.$('h2')).toHaveText("Jeremy Ashkenas");
-    });
-
----
-
-# Abstraksjoner
-
-Enkelt å lage en abstraksjoner:
-
-    .javascript
-    App.View = Backbone.View.extend({
-      renderTemplate: function(data) {
-        var html = Mustache.to_html(this.template, data);
-        this.$el.html(html);
-      }
-    });
-
-Lag nye views basert med `App.View.extend`:
-
-    .javascript
-    App.UserView = App.View.extend({
-        template: // ... konvensjon siden den kreves av renderTemplate i App.View
-
-        render: function() {
-            // delt funksjonalitet er bra!
-            this.renderTemplate(this.user.toJSON());
-            return this;
-        }
-    });
-
-Husk at du kan lage gode, enkle konvensjoner SELV!
-
----
-
-# Lytte på DOM-eventer
-
-I tillegg til å oppdatere DOM-en, er et view ansvarlig for å lytte på
-DOM-eventer.
-
-Alle DOM-eventene viewet lytter på, kan legges i `events`-hash-en:
-
-    .javascript
-    var UserView = App.View.extend({
-        events: {
-          "click h1": "editHeading"
-          // "event selektor": "funksjon"
-        },
-
-        editHeading: function(event) {
-            event.preventDefault();
-
-            // …
-        }
-    });
-
-Kan for eksempel testes med:
-
-    .javascript
-    userView.$("h1").click();
-
----
-
-# Globale events
-
-Når flere komponenter kan være interessert i en handling som har skjedd.
-
-Løsere kobling mellom komponenter.
-
-    .javascript
-    Backbone.on("new-status", function(data) {
-      console.log(data);
-    });
-
-    Backbone.trigger("new-status", "The status");
-
----
-
-# Teste eventer
-
-Eventer er API-et til en komponent.
-
-For å sjekke at en event fyrer korrekt, kan vi bruke en *spy*.
-
-Eksempel med bruk av Sinon.js:
-
-    .javascript
-    var spy = sinon.spy();
-    Backbone.on("test", spy);
-
-    // do something which should trigger "test"
-
-    expect(spy).toHaveBeenCalledOnce();
-
-Sjekk ut
-[https://github.com/froots/jasmine-sinon](https://github.com/froots/jasmine-sinon)
-for flere matchers.
-
----
-
-# Sammensatte views
-
-Et view kan bestå av flere views.
-
-    .javascript
-    App.MasterView = App.View.extend({
-
-      initialize: function(options) {
-          this.user = options.user;
+    var UserView = Backbone.View.extend({
+      initialize: function() {
+        this.model.on("change", this.render);
+        this.model.on("change:username", this.setUsername);
       },
 
       render: function() {
-          this.$el.html(Mustache.to_html(this.template, this.user.toJSON()));
+        this.$el.html("<h1>" + this.model.get("name") + "</h1>");
+      },
 
-          var subView = new App.SubView({ el: this.$("#sub") });
-          subView.render();
-
-          var otherView = new App.OtherView({ el: this.$("#other")});
-          otherView.render();
-
-          return this;
+      setUsername: function() {
+        this.$(".username").text("Batman!");
       }
 
+
+
+    });
+
+    var userView = new UserView({
+      model: batman
+    });
+
+    model.set("username", "thebatman");
+
+
+[Alle innebygde backbone-eventer](http://backbonejs.org/#Events-catalog)
+
+---
+
+# Events
+
+Vi kan også definere egne eventer
+
+
+    .javascript
+    var UserView = Backbone.View.extend({
+      initialize: function() {
+        this.model.on("gotFamouse", this.highlight);
+      },
+
+      highlight: function() {
+        this.$el.addClass("yellow");
+      }
+
+
+
+    });
+
+    var userView = new UserView({
+      model: batman
+    });
+
+    model.trigger("gotFamouse");
+
+
+---
+# Events
+
+Views har også en convenience-metode for å binde opp browser events
+    
+    .javascript
+    var UserView = Backbone.View.extend({
+
+      events: {
+        "click h1": "nameClickHandler"
+      },
+
+      initialize: function() {
+
+      },
+
+      nameClickHandler: function(event) {
+        var $element = $(event.currentTarget);
+
+        // do something;
+      }
+
+
+
+    });
+
+    var userView = new UserView({
+      model: batman
+    });
+
+
+---
+.middle.center
+
+
+![](images/eventCycle.png)
+
+det samme som å kalle 
+
+    .javascript
+    $("ul").on("click", "li", callback);
+
+
+---
+
+
+# Events
+
+Fra Backbone 1.0 har Backbone-objektet støtte for å binde eventer globalt
+
+
+    .javascript 
+    Backbone.on("userDidSomething", this.doSomethingElse);
+
+    Backbone.trigger("userDidSomething");
+
+
+
+
+---
+
+
+# Events
+
+Event er vel og bra, men gir ikke det mange bindinger/pekere som er vanskelig for garbage collectore å rydde opp i?
+
+---
+
+# Events
+
+Event er vel og bra, men gir ikke det mange bindinger/pekere som er vanskelig for garbage collectore å rydde opp i? 
+
+Ja!
+
+---
+
+# Events
+
+Event er vel og bra, men gir ikke det mange bindinger/pekere som er vanskelig for garbage collectore å rydde opp i? 
+
+Ja!
+
+    .javascript
+    var UserView = Backbone.View.extend({
+      initialize: function() {
+        Backbone.listenTo("cashPrice", this.goCrazy);
+      },
+
+      goCracy: function() {
+        this.$el.addClass("carzy");
+      }
+    });
+
+---
+
+
+
+# Oppgave
+
+Fortsett på todo-applikasjonen
+
+Legg til en checkbox for å sette todoen til ferdig.<br />
+Legg til en slett-knapp for å fjerne todoen. *hint:  "remove"-event på collection*
+
+
+
+Tre aktuelle filer:
+
+* js/todo/todoView.js
+* js/todo/todoCollection.js
+* js/todo/todoModel.js
+
+
+---
+
+.middle.center
+
+Løsningsforslag
+
+---
+
+.middle.center
+
+# require.js
+
+
+---
+
+# require.js
+
+Ikke en del av Backbone.js, men veldig nyttig i banken. 
+
+Håndterer avhengigheter mellom enkeltfiler i applikasjonen
+
+Har støtte for bygging og minifisering til produksjon 
+
+---
+
+# require.js
+krever at alle filer wrappes med en define-metode 
+
+    .javascript
+    define(function(require) {
+
+      // magic
+
+    });
+
+
+---
+# require.js
+Krever at alle filer wrappes med en define-metode 
+
+    .javascript
+    define(function(require) {
+
+      // magic
+
+    });
+
+
+Det som returerneres inne i define-callbacken vil bli exponert
+
+    .javascript
+
+    //magic.js
+    define(function(require) {
+
+      return { nanananan: "Batman!"};
+
+    });
+
+    ---
+
+    //app.js
+    require("magic"); // { nanananan: "Batman!"};
+
+
+---
+
+# require.js
+Krever at alle filer wrappes med en define-metode 
+
+    .javascript
+    define(function(require) {
+
+      // magic
+
+    });
+
+
+Det som returerneres inne i define-callbacken vil bli exponert
+
+    .javascript
+
+    //magic.js
+    define(function(require) {
+
+      return { nanananan: "Batman!"};
+
+    });
+
+    ---
+
+    //app.js
+    require("magic"); // { nanananan: "Batman!"};
+
+
+Navnet som brukes som key i require-metoden er filnavn - .js
+
+---
+
+# require.js
+
+Require kan konfigurers til ha shortcuts til filer/mapper som brukes ofte.
+
+    .javascript
+    requirejs.config({
+      paths: {
+        "base":                 "common-ui/base",
+        "utils":                "common-ui/utils",
+        "widgets":              "common-ui/widgets"
+      }
+    });
+
+
+---
+
+# require.js
+
+Require kan konfigurers til ha shortcuts til filer/mapper som brukes ofte.
+
+    .javascript
+    requirejs.config({
+      paths: {
+        "base":                 "common-ui/base",
+        "utils":                "common-ui/utils",
+        "widgets":              "common-ui/widgets"
+      }
+    });
+
+Require kan også configureres til å forstå filer som ikke inneholder define-blokk og eksplisitte avhengighet 
+    
+    .javascript
+    requirejs.config({
+      shim: {
+       "backbone": {
+          deps: ["jquery", "underscore"],
+          exports: "Backbone"
+        },
+        "jquery.ui.datepicker": {
+          deps: ["jquery", "jquery-ui/jquery.ui.core"]
+        }
+      }
     });
 
 ---
 
 # Oppgave
 
-Det ligger flere tester som er "avslått" med `xdescribe` og `xit`:
+Refaktorer todo-appen fra å bruke globalt namespace til å bruke require<br />
+Ta i bruk convenience objektene som finnes i /js/base fremfor å bruke Backbone dirrekte. 
 
-1. `newStatusViewSpec.js`
-2. `monologSpec.js`
-3. Siste spec i `userViewSpec.js`
-4. `statusesViewSpec.js`
 
-Implementer `App.start()` slik at app-en kjører.
+*hint: require config må lastes etter require*
+
 
 ---
+
+.middle.center
+
+#Hvordan bygge større applikasjoner
+
+
+---
+
+#Hvordan bygge større applikasjoner
+
+* Splitt alt opp i enkeltfiler.
+* Unngå filer på mer enn 500 linjer. 
+* Abstraher bort gennerell view-logikk i enkeltstående subviews. 
+
+---
+
+.big-code
+
+#Hvordan bygge større applikasjoner
+
+    .javascript
+    var UserView = BaseView.extend({
+
+      initialize: function() {
+        this.userChangeView = new ChangeUserView({
+          model: this.model
+        });
+        this.addSubView(this.userChangeView);
+      },
+
+      render: function() {
+        this.renderTemplate();
+
+        this.userChangeView.setElement(this.$(".changeUser"));
+        this.userChangeView.render();
+      }
+
+
+    });
+
+
+---
+.big-code
+
+
+#Hvordan bygge større applikasjoner
+
+    .javascript
+    var SubViewHandler = function() {
+      this.subViews = [];
+    };
+
+    _.extend(SubViewHandler.prototype, {
+
+      addSubView: function(subView) {
+        if(_.isUndefined(subView)) {
+          throw "Subview can't be undefined";
+        }
+
+        if (!_.contains(this.subViews, subView)) {
+          this.subViews.push(subView);
+        }
+      },
+
+      destroySubViews: function() {
+        _.invoke(this.subViews, 'destroy');
+        this.subViews.length = 0;
+      }
+    });
+
+---
+
+#Hvordan bygge større applikasjoner
+
+Backbone har en innebygget router som kan brukes til å stenge ned og opprette views.
+
+---
+
+#Hvordan bygge større applikasjoner
+
+Backbone har en innebygget router som kan brukes til å stenge ned og opprette views.
+
+    .javascript
+    var AppRouter = Backbone.Router.extend({
+
+    routes: {
+      "help":                 "help",    // #help
+      "search/:query":        "search",  // #search/kiwis
+      "search/:query/p:page": "search"   // #search/kiwis/p7
+    },
+
+    help: function() {
+      // do something
+    },
+
+    search: function(query, page) {
+      // do something
+    }
+
+  });
+
+
+---
+
+#Hvordan bygge større applikasjoner
+
+Routing kan trigges manuelt gjennom
+
+    .javascript
+    var router = new Router();
+    router.navigate("about", [options]) 
+
+eller 
+    
+    .html
+    <a href="#about">about</a>
+
+---
+
+
+# Oppgave
+
+Lag et subview som tar seg av endring av en todo. 
+
+
+*Hvis det blir tid...*<br />
+Refakturer todo-appen til å inneholde to main views, todo og feks about.
+Sett opp en router til å navigere mellom de to viewene.
+
+
+---
+
 
 # Avsluttende tanker
 
-* Grove tester
-* Teste gjennom stacken
-* Mock ajax (fra starten av)
+* Modulariser applikasjonen
+* Abstraher bort logikk
+* Render så ofte du må
+* Opprett heller objektet på ny enn å ta vare på det i minne
 * Gjør det på ny kode, legacy JavaScript er PAIN!
-* Diskuter arkitektur, diskuter kode, lær — JavaScript-testing er ikke enkelt
-* Det tar tid — du må lære å skrive testbar JavaScript
-* Følg med i consollen
 * Lag dine egne konvensjoner
 * Pass på duplisering
 
-Start tidlig og vær streng. Og hold ut.
+Alle rammeverk har sine ups and downs, hold ut.
 
     </textarea>
     <div id="slideshow" class="white"></div>
