@@ -4,7 +4,8 @@
     window.App.TodoModel = Backbone.Model.extend({
 
         defaults: {
-            "name": ""  
+            "name": "",
+            "done": false
         },
 
         initialize: function(){
